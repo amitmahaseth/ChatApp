@@ -2,6 +2,7 @@ package com.example.chatapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.adapter.MessageAdapter
 import com.example.chatapp.adapter.UserAdapter
@@ -67,13 +68,28 @@ class UserChatActivity : AppCompatActivity() {
             val message=binding.edtMsgBox.text.toString().trim()
             val messageObject=UserMessage(message,senderUid)
 
-            databaseReference.child("chats").child(senderRoom!!).child("messages").push()
-                .setValue(messageObject).addOnSuccessListener {
-                    databaseReference.child("chats").child(receiverRoom!!).child("messages").push()
-                        .setValue(messageObject)
-                }
-            binding.edtMsgBox.setText("")
+            if (empty()) {
+                databaseReference.child("chats").child(senderRoom!!).child("messages").push()
+                    .setValue(messageObject).addOnSuccessListener {
+                        databaseReference.child("chats").child(receiverRoom!!).child("messages")
+                            .push()
+                            .setValue(messageObject)
+                    }
+                binding.edtMsgBox.text.clear()
+
+            }
         }
 
+    }
+
+    private fun empty():Boolean{
+        val edtText=binding.edtMsgBox.text.toString().trim()
+
+        if (edtText.isEmpty()){
+            binding.edtMsgBox.error="Enter Your Msg"
+            return false
+        }else{
+            return true
+        }
     }
 }
