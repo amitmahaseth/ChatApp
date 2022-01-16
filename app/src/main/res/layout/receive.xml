@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:background="@drawable/edit_text_border"
         android:layout_marginTop="@dimen/_5sdp"
@@ -19,6 +20,14 @@
             android:text="Receive Message"
             android:textColor="@color/black" />
 
-    </RelativeLayout>
+        <ImageView
+            android:id="@+id/img_receive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:src="@drawable/user"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 </RelativeLayout>

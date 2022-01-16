@@ -1,11 +1,14 @@
 package com.example.chatapp.adapter
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.chatapp.R
 import com.example.chatapp.model.UserMessage
 import com.google.firebase.auth.FirebaseAuth
@@ -35,7 +38,18 @@ class MessageAdapter(val mContext:Context,val messageList:ArrayList<UserMessage>
         if (holder.javaClass == SentViewHolder::class.java){
             //for sent view holder
             val viewHolder=holder as SentViewHolder
-            holder.sentMessage.text=currentMessage.message
+            if (currentMessage.imageUri?.equals("")==true){
+                holder.sendImage.visibility=View.VISIBLE
+                holder.sentMessage.visibility=View.GONE
+                Glide.with(mContext).load(currentMessage.imageUri).into(holder.sendImage)
+
+            }else{
+                holder.sentMessage.text=currentMessage.message
+                holder.sendImage.visibility=View.GONE
+                holder.sentMessage.visibility=View.VISIBLE
+
+
+            }
         }else{
             //for receive view holder
             val viewHolder=holder as ReceiveViewHolder
@@ -56,11 +70,13 @@ class MessageAdapter(val mContext:Context,val messageList:ArrayList<UserMessage>
     }
     class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val sentMessage=itemView.findViewById<TextView>(R.id.tv_sent)
+        val sendImage=itemView.findViewById<ImageView>(R.id.img_send)
 
     }
 
     class ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val receiveMessage=itemView.findViewById<TextView>(R.id.tv_receive)
+        val receiveImage=itemView.findViewById<ImageView>(R.id.img_receive)
     }
 
 }
